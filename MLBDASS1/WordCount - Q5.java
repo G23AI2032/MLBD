@@ -22,13 +22,18 @@ public class WordCount {
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
       // Log the input received by the map function
-      System.out.println("LOG: " + value.toString());
-      StringTokenizer itr = new StringTokenizer(value.toString());
+      System.out.println("Map Input: " + value.toString());
+
+      // Remove punctuation from the input
+      String sanitizedLine = value.toString().replaceAll("\\p{P}", "");
+      System.out.println("Sanitized Input: " + sanitizedLine);
+      // Tokenize the sanitized input
+      StringTokenizer itr = new StringTokenizer(sanitizedLine);
       while (itr.hasMoreTokens()) {
         word.set(itr.nextToken());
         context.write(word, one);
         // Log each output emitted by the map function
-        System.out.println("LOG: Map Output: " + word.toString() + "-> " + one.get());
+        System.out.println("Map Output: " + word.toString() + ", 1");
       }
     }
   }
@@ -41,7 +46,7 @@ public class WordCount {
                        Context context
                        ) throws IOException, InterruptedException {
       // Log the reduce input for this key
-      System.out.print("LOG: Reduce Input for key " + key.toString() + ": ");
+      System.out.print("Reduce Input for key " + key.toString() + ": ");
       int sum = 0;
       for (IntWritable val : values) {
         // Log each individual value in the reduce phase
@@ -52,7 +57,7 @@ public class WordCount {
       result.set(sum);
       context.write(key, result);
       // Log the output from the reduce phase
-      System.out.println("LOG: Reduce Output: " + key.toString() + "-> " + sum);
+      System.out.println("Reduce Output: " + key.toString() + ", " + sum);
     }
   }
 

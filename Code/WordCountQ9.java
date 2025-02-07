@@ -94,13 +94,10 @@ public class WordCountQ9 {
       long numMaps = job.getCounters().findCounter("org.apache.hadoop.mapred.Task$Counter", "MAP_INPUT_RECORDS").getValue();
 
       StringBuilder results = new StringBuilder();
-      results.append("\nJob Statistics for split size: ").append(splitSize).append(" bytes\n");
+      results.append("\nStatistics for split size: ").append(splitSize).append(" bytes\n");
       results.append("Split Size: ").append(splitSize).append(" bytes (").append(splitSize / (1024 * 1024)).append("MB)\n");
-      results.append("Execution Time: ").append(executionTime).append(" ms\n");
-      results.append("Number of Maps: ").append(numMaps).append("\n");
-      results.append("Average time per map: ").append(executionTime / numMaps).append(" ms\n");
+      results.append("Execution Time: ").append(executionTime).append(" ms\n");      
       results.append("----------------------------------------");
-
       LOGGER.info(results.toString());
 
       if (!success) {
